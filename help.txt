@@ -1,0 +1,3 @@
+#python manage.py db init - инициализация базы данных
+#python manage.py db migrate - созадем миграции
+#python manage.py db upgrade - применяем миграции

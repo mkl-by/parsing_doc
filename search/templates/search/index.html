@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %} поиск {% endblock %}
+{% block content1 %}
+    <div class='container'>
+        <div class="row">
+            <div class="col-sm-3" align="center">
+
+                {% block form_search %}
+                {% endblock %}
+
+            </div>
+            <div class="col-sm-9">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">№</th>
+                        <th scope="col">Номер документа</th>
+                        <th scope="col">Краткое содержание документа</th>
+                        <th scope="col">Наименование дела</th>
+                        <th scope="col">Дата документа</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% block response %}
+                    {% endblock %}
+
+                    </tbody>
+                </table>
+            {% if post.items %}
+             {{ pagination.links }}
+                {{ pagination.info }}
+            {% endif %}
+{#                            создаем пагинацию#}
+{#                <ul class="pagination">#}
+{#                    <li#}
+{#                            {% if not post.has_prev %} {# если нет предыдущего блокируем кнопку назад#}
+{#                                class="disabled"#}
+{#                            {% endif %}>#}
+{##}
+{#                        <a href="./?sear={{ sear }}&page={{ post.prev_num }}" aria-label='Prev'>&laquo;</a></li>#}
+{##}
+{#                    {% for pag in post.iter_pages() %}#}
+{#                        <li {% if page==post.page %} class="active" {% endif %}>#}
+{#                            <a href="./?sear={{ sear }}&page={{ pag }}"> {{ pag }} <span#}
+{#                                    class="sr-only">(current)</span></a></li> {# рисуем и делаем ссылки на следующие страницы#}
+{#                    {% endfor %}#}
+{##}
+{#                    <li#}
+{#                            {% if not post.has_next %} {# если нет следующего блокируем кнопку вперед#}
+{#                                class="disabled"#}
+{#                            {% endif %}>#}
+{##}
+{#                        <a href="./?sear={{ sear }}&page={{ post.next_num }}" aria-label='Next'>&raquo;</a></li>#}
+{#                </ul>#}
+{#            {% endif %}#}
+            </div>
+        </div>
+    </div>
+{% endblock %}

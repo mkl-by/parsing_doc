@@ -1,0 +1,40 @@
+{% extends 'search/index.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block form_search %}
+    <form method="POST" class="">
+
+        {{ form1.csrf_token }}
+
+        {#         {{ form1.hidden_tag() }}#}
+        <h4 align="center">Поиск документа <p>{{ sear }}</p></h4>
+        {% if form1.date_doc %}
+            <div align="center"><p>{{ form1.date_doc (maxlength=10, placeholder="дд.мм.гггг") }}</p></div>
+            <p>{{ form1.submin(class="btn btn-primary") }}</p>
+            {% if form1.errors %}
+                <div class="alert alert-warning" role="alert">  {{ form1.date_doc.errors[1] }} </div>
+            {% endif %}
+        {% else %}
+            <div align="center"><p>{{ form1.data_one (maxlength=10, placeholder="дд.мм.гггг") }}</p></div>
+            <div align="center"><p>{{ form1.data_two (maxlength=10, placeholder="дд.мм.гггг") }}</p></div>
+            <p>{{ form1.submin(class="btn btn-primary") }}</p>
+            {% if form1.errors %}
+                <div class="alert alert-warning" role="alert">  {{ form1.data_two.errors[0] }} </div>
+            {% endif %}
+        {% endif %}
+
+{#        <p>{{ wtf.quick_form(form1) }}#}
+    </form>
+{% endblock %}
+
+{% block response %}
+    {% for pos in post %}
+        <tr>
+            <th scope="row">{{ pos.id }}</th>
+            <td>{{ pos.number }}</td>
+            <td>{{ pos.docname }}</td>
+            <td>{{ pos.case }}</td>
+            <td>{{ pos.date_doc }}
+        </tr>
+    {% endfor %}
+{% endblock %}

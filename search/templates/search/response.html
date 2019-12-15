@@ -1,0 +1,21 @@
+{% extends 'search/index.html' %}
+
+{% block form_search %}
+    <form action="#" method="post" name="form">
+        {{ form.hidden_tag() }}
+        <h4 align="center">Поиск документа <p>{{ sear }}</p></h4>
+            {{ form.number_form}}
+          <input type="submit" class="btn btn-dark" value="Найти">
+    </form>
+{% endblock %}
+
+{% block response %}
+    {% for pos in post %}
+        <tr>
+            <th scope="row">{{ pos.id }}</th>
+            <td>{{ pos.number }}</td>
+            <td>{{ pos.docname }}</td>
+            <td>{{ pos.case }}</td>
+        </tr>
+    {% endfor %}
+{% endblock %}
