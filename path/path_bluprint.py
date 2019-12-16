@@ -1,17 +1,37 @@
+from builtins import enumerate
+
 from flask import Blueprint, render_template, request
 from pathlib import Path, PurePath
 from path.forms import MyForm
 from docx import Document
+
 paths=Blueprint('paths', __name__, template_folder='templates')
 path_home = Path.home()
 expansion=['.doc', '.docx']
 dat=['номер документа', 'экземпляр', 'наименование документа', 'страницы']
+pars=('дело', 'том')
 
 def parsing_doc(path):
     q=['-','', ' ']
     d={}
     document = Document(path)
+
+    for para in document.paragraphs:
+        #выбираем все параграфы(строки) из документа и построчно читаем
+        par=para.text
+        num1=par.find('дело')
+        num2 = par.find('том')
+        if num1!=-1 or num2!=-1:
+            #если в стоку входят слова "дело" или "том"
+            spl=par.split()
+            for st, spis in enumerate(spl):
+                if spis.isdigit() and spl[st-1]=='дело':
+                    case_number=int(spis)
+                elif spis.isdigit() and spl[st-1]=='том':
+                    case_tom=int(spis)
+
     for table in document.tables:
+        #разбираем таблицу сначала на таблицы, потом на строки, потом поячеячно
         for s, row in enumerate(table.rows):
             dd={}
             sss=0
@@ -20,6 +40,8 @@ def parsing_doc(path):
                     e=i.text
                     dd[dat[sss]]=e
                     sss+=1
+            dd['дело']=case_number
+            dd['том']=case_tom
             if s>=3: d[s-3]=dd
 
     print(d)
