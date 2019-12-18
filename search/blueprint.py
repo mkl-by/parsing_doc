@@ -27,7 +27,6 @@ def index():
     if q:
         search = True
     page = request.args.get(get_page_parameter(), type=int, default=1) #готовим номер страницы
-    print('!!!!!!! ', get_page_parameter(),' ', page)
     qq=Search_document()
     form = Myform()
     sear=searr()

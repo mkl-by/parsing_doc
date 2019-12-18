@@ -3,10 +3,12 @@ from app import db
 class Document(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     number = db.Column(db.String(20))
+    instance = db.Column(db.SmallInteger)
     docname = db.Column(db.String(120))
+    page=db.Column(db.String(7))
     case_number = db.Column(db.SmallInteger)
-    case = db.Column(db.String(120))
     case_tom = db.Column(db.SmallInteger)
+    case = db.Column(db.String(120))
     date_doc=db.Column(db.Date)
 
     def __init__(self, *args, **kwargs):
@@ -24,9 +26,9 @@ class Document(db.Model):
 
 
     def __repr__(self):
-        return 'id - {0}, docname - {1}, namber - {2}, case_number - {3}, ' \
-               'case - {4}, date_doc - {5}'.format(self.id, self.docname, self.number,
-                                    self.case_number, self.case, self.date_doc)
+        return 'id - {0}, nUmber - {2}, docname - {1}, instance - {6}, page - {7}, case_number - {3}, ' \
+               'case - {4}, case_tom - {8}, date_doc - {5}'.format(self.id, self.docname, self.number,
+                                    self.case_number, self.case, self.date_doc, self.instance, self.page, self.case_tom)
 
 
 # class Opis(db.model):

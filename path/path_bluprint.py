@@ -1,15 +1,28 @@
 from builtins import enumerate
-
+import models, re, datetime
 from flask import Blueprint, render_template, request
 from pathlib import Path, PurePath
 from path.forms import MyForm
 from docx import Document
+from app import db
 
 paths=Blueprint('paths', __name__, template_folder='templates')
 path_home = Path.home()
 expansion=['.doc', '.docx']
 dat=['номер документа', 'экземпляр', 'наименование документа', 'страницы']
 pars=('дело', 'том')
+
+def pars_data(text):
+    #Написать проверку входящего и исходящего !!!!!!!!!
+    reg = r'^[0-3][0-9][.][0,1][0-2][.][1-2][0,9]\d\d$'
+    t=text.split('\n')
+    p = re.compile(reg)
+    print((p.findall(t[1])[0].split('.')))# сделать проверку на буквы!!!!!!!!!!!
+    d=p.findall(t[1])[0].split('.')
+    dat=datetime.date(int(d[2]), int(d[1]), int(d[0]))
+    print(dat)
+    #return data_pars
+
 
 def parsing_doc(path):
     q=['-','', ' ']
@@ -30,21 +43,42 @@ def parsing_doc(path):
                 elif spis.isdigit() and spl[st-1]=='том':
                     case_tom=int(spis)
 
+
     for table in document.tables:
         #разбираем таблицу сначала на таблицы, потом на строки, потом поячеячно
         for s, row in enumerate(table.rows):
             dd={}
             sss=0
+            do = models.Document()
+            doc = list(do._sa_class_manager)
             for ss, i in enumerate(row.cells):
                 if s >= 3 and not(i.text in q) and ss!=0:
-                    e=i.text
-                    dd[dat[sss]]=e
-                    sss+=1
-            dd['дело']=case_number
-            dd['том']=case_tom
-            if s>=3: d[s-3]=dd
+                    do.__setattr__(doc[sss+1], i.text)
+                    if ss==1 or ss==2:
+                        pars_data(i.text)
 
-    print(d)
+                    dd[dat[sss]]=i.text
+                    sss+=1
+            do.__setattr__(doc[5], case_number)
+            do.__setattr__(doc[6], case_tom)
+            do.set_case()
+            dd['том'] = case_tom
+            dd['дело'] = case_number
+            # if s >= 3:
+                # d[s - 3] = dd
+                # для записи информации в базу
+
+                # try:
+                #     db.session.add(do)
+                #     db.session.commit()
+                # except:
+                #     db.session.rollback()
+                #     raise
+                # finally:
+                #     db.session.close()
+
+
+    # print(d)
 
 @paths.route('/', methods=['GET', 'POST'])
 def my_path():
