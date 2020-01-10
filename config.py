@@ -13,7 +13,7 @@ class Configuration(object):
     #WTF_CSRF_ENABLED = True
     CSRF_ENABLED=True
     #WTF_CSRF_SECRET_KEY = 'KiJyftF^&*Ygbv%^eTRYTF$%'
-    SECRET_KEY = 'KiJyftkjdfdifTF$%'
+    SECRET_KEY = b'KiJyftkjdfdifTF$%'
 
 #настройки бутстрап
     BOOTSTRAP_SERVE_LOCAL = True #работаем с локальным файлом бутстрап

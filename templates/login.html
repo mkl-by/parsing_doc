@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/form.html' import render_form_row %}
+
+{% block content1 %}
+    <form method="post">
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-6 col-md-4"></div>
+                <div class="col-xs-6 col-md-4">
+                    {{ form.csrf_token() }}
+                    {{ render_form_row([form.username, form.passw]) }}
+                    {{ render_form_row([form.submint]) }}</div>
+                <div class="col-xs-6 col-md-4"></div>
+            </div>
+        </div>
+
+    </form>
+
+<p><p><p>
+{#{{ bootstrap.load_css() }}#}
+{#{{ render_form(form) }}#}
+
+
+
+ {% endblock %}

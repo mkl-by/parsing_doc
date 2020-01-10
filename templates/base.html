@@ -6,7 +6,6 @@
 <meta charset="utf-8">
     {% block title %} делопроизводство {% endblock %}
 
-
 </head>
 <body>
 {% block navbar %}
@@ -29,6 +28,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
+
                     <li class="active"><a href="#">Поиск описи <span class="sr-only">(current)</span></a></li>
                     <li><a href="{{ url_for('paths.my_path') }}">Добавить опись</a></li>
                     <li><a href="#">Добавить опись как есть</a></li>
@@ -47,6 +47,7 @@
                             <li><a href="#">One more separated link</a></li>
                         </ul>
                     </li>
+                    <li><a href="logout">выйти</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
@@ -65,6 +66,6 @@
 
 
 
-
+{{ bootstrap.load_js() }}
 </body>
 </html>

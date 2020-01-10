@@ -1,38 +1,62 @@
 {% extends 'base.html' %}
 {% block title %} поиск описи {% endblock %}
 {% block content1 %}
+    <div class='container'>
+        <div class=row>
+            <div class="col-sm-6">
+                <table class="table table-striped">
+                    <a href="{{ url_for('paths.my_path') }}?urr={{ pren }}">Назад</a></th>
+                    <tbody>
+                    {% for pathh in path_isdir %} {# items #}
+                        <tr>
+                            {#                                        <th scope="row"></th>#}
+                            <td>
+                                <a href="{{ url_for('paths.my_path') }}?urr={{ pathh }}">
+                                    <img src="{{ url_for('static', filename='icon/folder.png') }}">
+                                    {{ pathh }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% for file, pathf in files_dict.items() %} {# items #}
+                        <tr>
+                            {#                    <th scope="row">файл</th>#}
+                            <td>
+                                <form method='POST' action=''>
+                                    {{ form.hidden_tag() }}
+                                    <button type="submint" class="btn btn-primary">
+                                        <img src="{{ url_for('static', filename='icon/word.png') }}">
+                                        {{ file }}
+                                        <input type="hidden" name="form_s" value="{{ pathf }}">
+                                    </button>
 
-    <div class="col-sm-6">
-        <table class="table table-striped">
-            <a href="{{ url_for('paths.my_path') }}?urr={{ pren }}">Назад</a></th>
-            <tbody>
-            {% for pathh in path_isdir %} {# items #}
-                <tr>
-{#                                        <th scope="row"></th>#}
-                    <td>
-                        <a href="{{ url_for('paths.my_path') }}?urr={{ pathh }}">
-                            <img src="{{ url_for('static', filename='icon/folder.png') }}">
-                            {{ pathh }}</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            {% for file, pathf in files_dict.items() %} {# items #}
-                <tr>
-                    {#                    <th scope="row">файл</th>#}
-                    <td>
-                        <form method='POST' action=''>
-                            {{ form.hidden_tag() }}
-                            <button type="submint" class="btn btn-primary">
-                                <img src="{{ url_for('static', filename='icon/word.png') }}">
-                                {{ file }}
-                                <input type="hidden" name="form_s" value="{{ pathf }}">
-                            </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-6" align="center">
+                {% if errors and errors['number_row']!=None%}
+                    <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error: </span>
+                        {{ errors['error'] }}
 
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                        {% if errors['number_row'] %}
+                            {{ errors['number_row'] }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% if errors and errors['number_row']==None  %}
+                    <div class="alert alert-success" role="alert">
+                         {{ errors['error'] }}
+                    </div>
+                {% endif %}
+
+
+            </div>
+        </div>
     </div>
+
 {% endblock %}

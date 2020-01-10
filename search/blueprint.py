@@ -1,4 +1,6 @@
-from flask import Blueprint, render_template, redirect, request
+from flask import Blueprint, render_template, redirect, request, url_for, flash
+from flask_login import login_required
+
 from models import Document
 from .forms import Myform, Myformdata, MyFormDataRange
 from .class_search import Search_document
@@ -21,6 +23,7 @@ def searr():
     return sear
 
 @search.route('/', methods=('GET', 'POST'))
+@login_required
 def index():
     search = False
     q = request.args.get('q')
@@ -44,10 +47,17 @@ def index():
         return render_template ('search/index_template.html', form=form, post=post, sear=sear)
 
     post = qq.get_all(page)
+
     pagination = Pagination(page=page, total=post.query.count(), css_framework='foundation', search=search, record_name='post', per_page=10)
-    return render_template('search/index_template.html', pagination=pagination, post=post, form=form, sear=sear) #в папке templates/search/index.html
+    try: #в случае если нет данных в базе
+        return render_template('search/index_template.html', pagination=pagination, post=post, form=form, sear=sear) #в папке templates/search/index.html
+    except TypeError:
+        flash('В базе нет документов', 'bg-danger')
+        return redirect(url_for('index'))
+
 
 @search.route('/data', methods=('GET', 'POST'))
+@login_required
 def indexdata():
     #поиск документа по дате
     form1=Myformdata()
@@ -61,6 +71,7 @@ def indexdata():
     return render_template('search/index_template_date.html', form1=form1, post=post, sear=sear)
 
 @search.route('/datarange', methods=('GET', 'POST'))
+@login_required
 def indexdatarange():
     #поиск документа в диапазоне дат
     formrange = MyFormDataRange()
